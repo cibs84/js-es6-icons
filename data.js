@@ -146,6 +146,19 @@ const selectCategory = document.getElementById('category');
 selectCategory.value = 'all';
 
 
+// POPOLO LE OPTION DELLA SELECT DINAMICAMENTE
+// Creo un array con tutte le categorie di icone non ripetute
+const iconTypes = getIconTypes(allIcons);
+
+// Stampo il template option (uno per ogni categoria) nel container #category 
+drawOptionsToSelect(iconTypes, selectCategory);
+
+
+// ---------------
+// EVENT LISTENER
+// ---------------
+
+
 // Richiamo una funzione anonima tutte le volte che lo stato del selettore filtro categoria cambia stato
 selectCategory.addEventListener('change', 
 	function() {
@@ -229,3 +242,34 @@ function generateColor() {
 function getRndInteger(min, max) {
 	return Math.floor(Math.random() * (max - min + 1) ) + min;
   }
+
+
+// Dall'array 'allIcons', creo un array con i tipi di icone non duplicati
+function getIconTypes(allIcons) {
+	// Creo array in cui pushare i tipi non duplicati
+	const categoriesArray = [];
+
+	// Per ogni elemento 'icon' dell'array 'allIcons':
+	allIcons.forEach(icon => {
+
+		// SE il suo type non è ancora presente nell'array 'categoriesArray', ce lo pusho  
+		if (!categoriesArray.includes(icon.type)) {
+			categoriesArray.push(icon.type);
+		}
+	});
+
+	// Restituisco l'array 'categoriesArray'
+	return categoriesArray;
+}
+
+
+// Stampa le option (una per ogni categoria) nella select per filtrare le categorie di icone 
+function drawOptionsToSelect(typesArray, optionsContainer) {
+	typesArray.forEach(type => {
+		// Creo template della option da stampare
+		const templateOptionType = `<option value="${type}">${type}</option>`;
+
+		// Stampo il template option nell'elemento select #category
+		optionsContainer.innerHTML += templateOptionType;
+	});
+}
